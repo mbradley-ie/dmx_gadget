@@ -8,6 +8,9 @@
 
 #include <zephyr/kernel.h>
 #include <zephyr/drivers/gpio.h>
+#include <zephyr/shell/shell.h>
+
+#include "dmx512.h"
 
 /* 1000 msec = 1 sec */
 #define SLEEP_TIME_MS 500
@@ -21,9 +24,13 @@
  */
 static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
 
+struct dmx_universe * mydmx = NULL;
+
 void main(void)
 {
 	int ret;
+	
+	printf("Starting DMX Gadget...\n");
 
 	if (!gpio_is_ready_dt(&led))
 	{
@@ -43,7 +50,6 @@ void main(void)
 		{
 			return;
 		}
-		printf("led toggle\n");
 		k_msleep(SLEEP_TIME_MS);
 	}
 }
