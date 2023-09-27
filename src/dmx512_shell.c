@@ -36,14 +36,20 @@ static int cmd_dmx_print(const struct shell *sh, size_t argc, char **argv)
 
 static int cmd_dmx_slot(const struct shell *sh, size_t argc, char **argv)
 {
-    int32_t ret;
+    int32_t ret = 0;
+    uint32_t slot_value_read;
     uint8_t slot_value;
     uint16_t slot;
 
     switch(argc) {
         case 3:
-            // TODO: Need to validate value, e.g. range is 0 - 255
-            slot_value = atoi(argv[2]);
+            slot_value_read = atoi(argv[2]);
+            if (slot_value_read > 255) {
+                ret = -EINVAL;
+                shell_print(sh, "Error %d", ret);
+                return (ret);
+            }
+            slot_value = (uint8_t)slot_value_read;
             // fall through is required here
         case 2:
             slot = atoi(argv[1]);

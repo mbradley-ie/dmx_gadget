@@ -11,7 +11,7 @@
 
 // Set a slot to a value, ensuring slot is valid
 int32_t dmx_set_slot(struct dmx_universe * dmx_uni, uint16_t slot, uint8_t value) {
-    if (slot > dmx_uni->max_slot) {
+    if (!dmx_uni || slot > dmx_uni->max_slot) {
         return -EINVAL;
     };
     
@@ -22,7 +22,7 @@ int32_t dmx_set_slot(struct dmx_universe * dmx_uni, uint16_t slot, uint8_t value
 
 // Get a slot to a value, ensuring slot is valid
 int32_t dmx_get_slot(struct dmx_universe * dmx_uni, uint16_t slot, uint8_t * value) {
-    if (slot > dmx_uni->max_slot) {
+    if (!dmx_uni || slot > dmx_uni->max_slot) {
         return -EINVAL;
     };
     
@@ -95,7 +95,7 @@ error_dmx_alloc:
 // Destroy a DMX512 universe
 int32_t dmx_destroy(struct dmx_universe ** dmx_uni) {
 
-    (*dmx_uni)->start_code = 0x00;
+    (*dmx_uni)->start_code = 0xFF;
     (*dmx_uni)->max_slot = 0;
     //free(dmx_uni->slot_data);
     // TODO dmx_uni->slot_data = NULL;
